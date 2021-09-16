@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ProjectResult } from './ProjectResult';
-import { Button, InputLabel, Select, MenuItem, FormControl, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Button, InputLabel, Select, MenuItem, FormControl, TextField, Container, Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './Program.css';
 

@@ -11,15 +11,6 @@ namespace JiraGenerator.Controllers
     [Route("[controller]")]
     public class ProjectController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-        private readonly string[] NUMBER_TO_STRING = new string[] { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
-        private readonly string HEADER = "||Project Name||Project Path||Branch Name||Version||Note||";
-        private readonly string DBHEADER = @"||Database||File Name||Branch Name||Note||
-| | | | |";
-
         private readonly ILogger<WeatherForecastController> _logger;
         private List<ProjectGroup> _projectGroup { get; set; }
         private List<Project> _projects { get; set; }
@@ -41,7 +32,16 @@ namespace JiraGenerator.Controllers
         [HttpGet]
         public List<Project> Get()
         {
-              return  _projects;
+            return _projects;
+        }
+
+        [HttpPost]
+        public void Post(List<Project> projects)
+        {
+            if (System.IO.File.Exists("ProjectPath.json"))
+            {
+                System.IO.File.WriteAllText("ProjectPath.json", JsonConvert.SerializeObject(projects));
+            }
         }
     }
 }
