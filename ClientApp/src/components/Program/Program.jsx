@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ProjectResult } from './ProjectResult';
-import { Button, InputLabel, Select, MenuItem, FormControl, TextField, Container } from '@material-ui/core';
+import { Button, InputLabel, Select, MenuItem, FormControl, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './Program.css';
 
@@ -21,6 +21,7 @@ function Program() {
   const [commitTo, setCommitTo] = useState(0);
   const [branchDomain, setbranchDomain] = useState('');
   const [branch, setbranch] = useState('');
+  const [withFeature, setWithFeature] = useState(false);
   const [openComment, setOpenComment] = useState([false,false,false,false,false,false,false,false,false]);
   const classes = useStyles();
   const branchList = ["", "CREDIT", "ITNOCPR", "TCPR", "PRJSA"];
@@ -47,7 +48,8 @@ function Program() {
       commitFrom: commitFrom,
       commitTo: commitTo,
       branchDomain: branchDomain,
-      branch: branch
+      branch: branch,
+      withFeature: withFeature
     }]);
 
     let newArray = [...openComment];
@@ -59,6 +61,10 @@ function Program() {
 
   function hendleDelete(index) {
     setSelectedProject(selectedProjects.filter((v, i) => i !== index));
+  }
+
+  function hendleCheckbox(){
+    setWithFeature(!withFeature);
   }
 
   return <div>
@@ -80,6 +86,9 @@ function Program() {
         <TextField type="number" id="text_comment_to" label="備註結束" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitTo} onChange={(e) => setCommitTo(e.target.value)} />
       </FormControl>
       <FormControl className={classes.margin}>
+        <Checkbox checked={withFeature} onChange={hendleCheckbox}/>
+      </FormControl>
+      <FormControl className={classes.margin}>
         <InputLabel id="select_branch_domain">Branch Domain</InputLabel>
         <Select name="select_branch_domain" id="select_branch_domain" value={branchDomain} onChange={(e) => setbranchDomain(e.target.value)} className={classes.minWidth}>
           {
@@ -92,9 +101,11 @@ function Program() {
       <FormControl className={classes.margin}>
         <TextField type="text" id="text_branch" label="Branch"  value={branch} onChange={(e) => setbranch(e.target.value)} />
       </FormControl>
-      <Button id="button_add" variant="contained" onClick={handleProjectAdd}>Add</Button>
+      <FormControl className={classes.margin}>
+        <Button id="button_add" variant="contained" onClick={handleProjectAdd}>Add</Button>
+      </FormControl>
     </Container>
-    <ProjectResult projects={selectedProjects} hendleDelete={hendleDelete}></ProjectResult>
+    <ProjectResult projects={selectedProjects} hendleDelete={hendleDelete} openComment={openComment}></ProjectResult>
   </div>
 };
 
