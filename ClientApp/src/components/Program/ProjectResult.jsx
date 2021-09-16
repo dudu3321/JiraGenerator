@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ProjectTable } from './ProjectTable';
 import { ProjectText } from './ProjectText';
 
@@ -12,7 +12,7 @@ export const ProjectResult = (props) => {
             if (i === 0) continue;
             if (i > 9) break;
             commentSTableRow += `備註${NUMBER_TO_STRING[i]}`;
-            if (i !== item.commitTo && i < 9) {
+            if (i.toString() !== item.commitTo && i < 9) {
                 commentSTableRow += '、';
             }
         }
@@ -24,6 +24,10 @@ export const ProjectResult = (props) => {
             branch: (item.branchDomain === "" ? "" : `${item.branchDomain}-`) + item.branch
         });
     });
+
+    const projectTextStyle = {
+        'margin-top': '15px'
+    };
 
     return <div>
         <ProjectTable result={result} hendleDelete={props.hendleDelete}></ProjectTable>
