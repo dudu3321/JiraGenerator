@@ -77,10 +77,10 @@ function ProjectPath(props) {
   return <div>
     <Container>
       <FormControl className={classes.margin}>
-        <TextField type="text" id="text_name" label="Name" className="text_field" value={name} onChange={(e) => setName(e.target.value)} />
+        <TextField type="text" id="text_name" label="Name" className="text_field" value={name} onChange={(e) => setName(e.target.value)} style={{width:300}}/>
       </FormControl>
       <FormControl className={classes.margin}>
-        <TextField type="text" id="text_path" label="Path" className="text_field" value={path} onChange={(e) => setPath(e.target.value)} />
+        <TextField type="text" id="text_path" label="Path" className="text_field" value={path} onChange={(e) => setPath(e.target.value)} style={{width:500}}/>
       </FormControl>
       <FormControl className={classes.margin}>
         <Button id="button_add" variant="contained" onClick={handleProjectAdd}>Add</Button>

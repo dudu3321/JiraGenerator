@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Program() {
+  const initOpenComment = [false,false,false,false,false,false,false,false,false];
   const [projectlist, setProjectList] = useState([]);
   const [project, setProject] = useState({});
   const [selectedProjects, setSelectedProject] = useState([]);
@@ -22,7 +23,7 @@ function Program() {
   const [branchDomain, setbranchDomain] = useState('');
   const [branch, setbranch] = useState('');
   const [withFeature, setWithFeature] = useState(false);
-  const [openComment, setOpenComment] = useState([false,false,false,false,false,false,false,false,false]);
+  const [openComment, setOpenComment] = useState(initOpenComment);
   const classes = useStyles();
   const branchList = ["", "CREDIT", "ITNOCPR", "TCPR", "PRJSA"];
   useEffect(() => {
@@ -43,20 +44,18 @@ function Program() {
   }
 
   function handleProjectAdd() {
-    setSelectedProject([...selectedProjects, {
+    let newSelectedProject = [...selectedProjects, {
       project: project,
       commitFrom: commitFrom,
       commitTo: commitTo,
       branchDomain: branchDomain,
       branch: branch,
       withFeature: withFeature
-    }]);
+    }];
 
-    let newArray = [...openComment];
-    for (let i = commitFrom; i <= commitTo; i++) {
-      newArray[i-1] = true;
-    }
-    setOpenComment(newArray);
+    setSelectedProject(newSelectedProject);
+
+    CalculateOpenComment(newSelectedProject);
   }
 
   function hendleDelete(index) {
@@ -65,6 +64,17 @@ function Program() {
 
   function hendleCheckbox(){
     setWithFeature(!withFeature);
+  }
+
+  function CalculateOpenComment(selectedProject){
+    let newArray = [...initOpenComment];
+    for (let index = 0; index < selectedProject.length; index++) {
+      for (let i = commitFrom; i <= commitTo; i++) {
+        newArray[i-1] = true;
+      }
+    }
+    
+    setOpenComment(newArray);
   }
 
   return <div>
