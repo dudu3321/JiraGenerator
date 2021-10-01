@@ -13,6 +13,7 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
+        <Route exact path='/' component={Program} />
         <Route exact path='/Program' component={Program} />
         <Route path='/SqlData' component={SqlData} />
         <Route path='/ProjectPath' component={ProjectPath} />

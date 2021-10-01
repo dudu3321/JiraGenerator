@@ -15,12 +15,14 @@ export const ProjectResult = (props) => {
     props.projects.forEach(item => {
         let commentSTableRow = '';
         let branch = (item.withFeature ? "feature/" : "") + (item.branchDomain === "" ? "" : `${item.branchDomain}-`) + item.branch;
-        for (let i = item.commitFrom; i <= item.commitTo; i++) {
-            if (i === 0) continue;
+        let commitFromVal = item.commitFrom;
+        let commitToVal = item.commitFrom > item.commitTo ? item.commitFrom : item.commitTo;
+        for (let i = commitFromVal; i <= commitToVal; i++) {
+            if (i == 0) continue;
             if (i > 9) break;
             commentSTableRow += `備註${NUMBER_TO_STRING[i]}`;
             
-            if (i.toString() !== item.commitTo && i < 9) {
+            if (i.toString() !== commitToVal && i < 9) {
                 commentSTableRow += '、';
             }
         }

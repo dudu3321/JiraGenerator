@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ProjectPath(props) {
   const [projectList, setProjectList] = useState([]);
-  const [name, setName] = useState([]);
-  const [path, setPath] = useState([]);
+  const [name, setName] = useState();
+  const [path, setPath] = useState();
   const classes = useStyles();
 
   useEffect(() => {
@@ -58,6 +58,8 @@ function ProjectPath(props) {
   function handleProjectAdd() {
     let newList = [...projectList, { name: name, path: path}];
     SendNewList(newList, 'Add Success!');
+    setName('');
+    setPath('');
   }
 
   function SendNewList(newlist, alertString){

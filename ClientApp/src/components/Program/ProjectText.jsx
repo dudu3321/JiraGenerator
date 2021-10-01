@@ -8,7 +8,7 @@ export const ProjectText = (props) => {
 
     return <Box
         sx={{
-            display: 'flex',
+            display: 'grid',
             justifyContent: 'center',
             alignItems: 'flex-end',
             height:'30vh'
