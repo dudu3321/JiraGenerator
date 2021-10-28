@@ -3,7 +3,6 @@ import { ProjectTable } from './ProjectTable';
 import { ProjectText } from './ProjectText';
 
 export const ProjectResult = (props) => {
-    const NUMBER_TO_STRING = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
     const HEADER = "||Project Name||Project Path||Branch Name||Version||Note||\n";
     let result = [];
     let resltStr = '';
@@ -20,7 +19,7 @@ export const ProjectResult = (props) => {
         for (let i = commitFromVal; i <= commitToVal; i++) {
             if (i == 0) continue;
             if (i > 9) break;
-            commentSTableRow += `備註${NUMBER_TO_STRING[i]}`;
+            commentSTableRow += `備註${i}`;
             
             if (i.toString() !== commitToVal && i < 9) {
                 commentSTableRow += '、';
@@ -38,7 +37,7 @@ export const ProjectResult = (props) => {
 
     for(let i= 0; i < props.openComment.length; i++) {
         if (props.openComment[i] == true){
-            commentMain += `備註${NUMBER_TO_STRING[i + 1]}:\n`;
+            commentMain += `備註${i + 1}:\n`;
         }
     };
 

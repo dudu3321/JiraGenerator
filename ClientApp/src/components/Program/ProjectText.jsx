@@ -15,7 +15,7 @@ export const ProjectText = (props) => {
         }}>
         <TextField
             multiline
-            defaultValue={props.result.replaceAll('\n','').length === 0 ? '' : props.result }
+            value={props.result.length === 0 ? '' : props.result}
             style={style}
             rows={10}
             variant="outlined"

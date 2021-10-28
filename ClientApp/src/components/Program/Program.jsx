@@ -59,7 +59,8 @@ function Program() {
   function CalculateOpenComment(selectedProject) {
     let newArray = [...initOpenComment];
     for (let index = 0; index < selectedProject.length; index++) {
-      for (let i = commitFrom; i <= commitTo; i++) {
+      let minCommitTo = commitFrom > commitTo ? commitFrom : commitTo;
+      for (let i = commitFrom; i <= minCommitTo; i++) {
         newArray[i - 1] = true;
       }
     }

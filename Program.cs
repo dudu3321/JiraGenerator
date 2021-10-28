@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,9 @@ namespace JiraGenerator
             }
             catch (System.Exception ex )
             {
-                
+                Console.Write(ex.ToString());
+                Console.WriteLine("按任意鍵結束....");
+                Console.ReadKey();  //可按任意鍵結束畫面
             }
         }
 
