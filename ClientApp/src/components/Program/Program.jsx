@@ -72,7 +72,7 @@ function Program() {
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
-          <InputLabel id="select_project">專案名稱</InputLabel >
+          <InputLabel id="select_project">專案名稱2</InputLabel >
           <Select name="select_project" id="select_project" value={project.name ?? ""} onChange={handleProjectChange}>
             {
               projectlist.map((item, index) => {
@@ -83,10 +83,10 @@ function Program() {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={3}>
-        <TextField type="number" id="text_comment_from" label="備註起始" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitFrom} onChange={(e) => setCommitFrom(e.target.value)} fullWidth />
+        <TextField type="number" id="text_comment_from" label="備註起始2" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitFrom} onChange={(e) => setCommitFrom(e.target.value)} fullWidth />
       </Grid>
       <Grid item xs={12} sm={3}>
-        <TextField type="number" id="text_comment_to" label="備註結束" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitTo} onChange={(e) => setCommitTo(e.target.value)} fullWidth />
+        <TextField type="number" id="text_comment_to" label="備註結束2" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitTo} onChange={(e) => setCommitTo(e.target.value)} fullWidth />
       </Grid>
       <Grid item xs={12} sm={2}>
         <FormControl fullWidth>

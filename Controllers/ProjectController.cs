@@ -11,12 +11,10 @@ namespace JiraGenerator.Controllers
     [Route("[controller]")]
     public class ProjectController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private List<ProjectGroup> _projectGroup { get; set; }
         private List<Project> _projects { get; set; }
-        public ProjectController(ILogger<WeatherForecastController> logger)
+        public ProjectController()
         {
-            _logger = logger;
             _projectGroup = new List<ProjectGroup>();
             if (System.IO.File.Exists("ProjectPath.json"))
             {
