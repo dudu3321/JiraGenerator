@@ -34,36 +34,61 @@ function Program() {
   }
 
   function handleProjectAdd() {
-    let newSelectedProject = [...selectedProjects, {
+    let minCommit = 0;
+    let maxCommit = 0;
+
+    if (commitFrom != 0 || commitTo != 0) {
+      if (commitTo == 0) {
+        minCommit = commitFrom;
+        maxCommit = commitFrom;
+      }
+      else if (commitFrom > commitTo) {
+        minCommit = commitTo;
+        maxCommit = commitFrom;
+      }
+      else {
+        minCommit = commitFrom;
+        maxCommit = commitTo;
+      }
+    }
+
+    let newSelectedProjects = [...selectedProjects, {
       project: project,
-      commitFrom: commitFrom,
-      commitTo: commitTo,
+      commitFrom: minCommit,
+      commitTo: maxCommit,
       branchDomain: branchDomain,
       branch: branch,
       withFeature: withFeature
     }];
 
-    setSelectedProject(newSelectedProject);
-
-    CalculateOpenComment(newSelectedProject);
+    UpdateSelectedProject(newSelectedProjects);
   }
 
   function hendleDelete(index) {
-    setSelectedProject(selectedProjects.filter((v, i) => i !== index));
+    let newSelectedProjects = selectedProjects.filter((v, i) => i !== index);
+
+    UpdateSelectedProject(newSelectedProjects);
   }
 
   function hendleCheckbox() {
     setWithFeature(!withFeature);
   }
 
+  function UpdateSelectedProject(newSelectedProjects) {
+    
+    setSelectedProject(newSelectedProjects);
+    
+    CalculateOpenComment(newSelectedProjects);
+  }
+
+
   function CalculateOpenComment(selectedProject) {
     let newArray = [...initOpenComment];
-    for (let index = 0; index < selectedProject.length; index++) {
-      let minCommitTo = commitFrom > commitTo ? commitFrom : commitTo;
-      for (let i = commitFrom; i <= minCommitTo; i++) {
-        newArray[i - 1] = true;
+    selectedProject.forEach(item => {
+      for (let index = item.commitFrom; index <= item.commitTo; index++) {
+        newArray[index - 1] = true;
       }
-    }
+    });
 
     setOpenComment(newArray);
   }
@@ -72,7 +97,7 @@ function Program() {
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
-          <InputLabel id="select_project">專案名稱2</InputLabel >
+          <InputLabel id="select_project">專案名稱</InputLabel >
           <Select name="select_project" id="select_project" value={project.name ?? ""} onChange={handleProjectChange}>
             {
               projectlist.map((item, index) => {
@@ -83,10 +108,10 @@ function Program() {
         </FormControl>
       </Grid>
       <Grid item xs={12} sm={3}>
-        <TextField type="number" id="text_comment_from" label="備註起始2" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitFrom} onChange={(e) => setCommitFrom(e.target.value)} fullWidth />
+        <TextField type="number" id="text_comment_from" label="備註起始" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitFrom} onChange={(e) => setCommitFrom(e.target.value)} fullWidth />
       </Grid>
       <Grid item xs={12} sm={3}>
-        <TextField type="number" id="text_comment_to" label="備註結束2" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitTo} onChange={(e) => setCommitTo(e.target.value)} fullWidth />
+        <TextField type="number" id="text_comment_to" label="備註結束" className="text_field" InputProps={{ inputProps: { min: 0, max: 9 } }} value={commitTo} onChange={(e) => setCommitTo(e.target.value)} fullWidth />
       </Grid>
       <Grid item xs={12} sm={2}>
         <FormControl fullWidth>
