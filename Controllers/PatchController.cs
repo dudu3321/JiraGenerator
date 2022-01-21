@@ -10,26 +10,43 @@ namespace JiraGenerator.Controllers
     [Route("api/[controller]")]
     public class PatchController : ControllerBase
     {
+        Jira _jiraClient;
         public PatchController()
         {
+            _jiraClient = Jira.CreateRestClient("https://jira.cmdkman.com/", "kervin.tsai", "pass@word1");
         }
 
         [HttpPost]
-        public async Task<List<string>> Post([FromBody] PatchParam param)
+        [Route("Submit")]
+        public async Task<IActionResult> Submit([FromBody] PatchParam param)
+        {
+            try
+            {
+                await ImportResult(param);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("Search")]
+        public async Task<Dictionary<string,string>> Search([FromBody] PatchParam param)
         {
             var result = await GetData(param);
             return result;
         }
 
-        private async Task<List<string>> GetData(PatchParam param)
+        private async Task<Dictionary<string,string>> GetData(PatchParam param)
         {
-            var result = new List<string>();
+            var result = new Dictionary<string,string>();
             if (string.IsNullOrWhiteSpace(param.patchId))
             {
                 param.patchId = "CREDIT-2425";
             }
-            var client = Jira.CreateRestClient("https://jira.cmdkman.com/", "kervin.tsai", "pass@word1");
-            var searchResult = await client.Issues.GetIssueAsync(param.patchId);
+            var searchResult = await _jiraClient.Issues.GetIssueAsync(param.patchId);
             var linkList = await searchResult.GetIssueLinksAsync();
             foreach (var link in linkList)
             {
@@ -42,15 +59,25 @@ namespace JiraGenerator.Controllers
                 if (index > 0)
                 {
                     desc = desc.Remove(0, index);
-                    result.Add($"{link.InwardIssue.Key} ---- \r\n {desc}");
+                    result.Add(link.InwardIssue.Key.ToString(), desc);
                 }
             }
             return result;
+        }
+
+        private async Task ImportResult(PatchParam param)
+        {
+            var patchIssue = await _jiraClient.Issues.GetIssueAsync(param.patchId);
+            foreach (var item in param.result)
+            {
+                await patchIssue.AddCommentAsync(item.Value);
+            }
         }
     }
     public class PatchParam
     {
         public string patchId { get; set; }
         public string keyword { get; set; }
+        public Dictionary<string,string> result { get; set; }
     }
 }

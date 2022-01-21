@@ -3,10 +3,13 @@ import { ProjectTable } from './ProjectTable';
 import { ProjectText } from './ProjectText';
 
 export const ProjectResult = (props) => {
-    const HEADER = "||Project Name||Project Path||Branch Name||Version||Note||\n";
+    const HEADER = "異動程式: \n||Project Name||Project Path||Branch Name||Version||Note||\n";
     let result = [];
     let resltStr = '';
     let commentMain = '\n';
+    let todayDate = new Date();
+    let version = `v${todayDate.getFullYear()}.${ (todayDate.getMonth() + 1).toString().padStart(2,'0') }.${todayDate.getDate().toString().padStart(2,'0')}.01`;
+
     if (props.projects.length > 0) {
         resltStr += HEADER;
     }
@@ -26,7 +29,7 @@ export const ProjectResult = (props) => {
             }
         }
         
-        resltStr += `|${item.project.name}|${item.project.path}|${branch === '' ? ' ' : branch}| |${commentSTableRow === '' ? ' ' : commentSTableRow}|\n`
+        resltStr += `|${item.project.name}|${item.project.path}|${branch === '' ? ' ' : branch}|${version}|${commentSTableRow === '' ? ' ' : commentSTableRow}|\n`
         result.push({
             name: item.project.name,
             path: item.project.path,

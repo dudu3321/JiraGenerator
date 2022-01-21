@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { InputAdornment, TextField, Input, Button } from '@material-ui/core';
+import { InputAdornment, TextField, Button } from '@material-ui/core';
 
 class Patch extends PureComponent {
   constructor(props) {
@@ -9,7 +9,7 @@ class Patch extends PureComponent {
       hasError: false,
       patchId: '',
       keyword: '',
-      result: []
+      result: [],
     };
   }
 
@@ -37,9 +37,26 @@ class Patch extends PureComponent {
     console.log('Patch will unmount');
   }
 
+  handleSearch = () => {
+    if (this.state.patchId === "") {
+      alert("請輸入Patch ID !");
+      return;
+    }
+
+    let param = JSON.stringify({ patchId: `PATCH-${this.state.patchId}`, keyword: this.state.keyword });
+    this.requestApi('api/patch/Search', param, (json) => { this.setState({ result: json }); });
+  }
+
   handleSubmit = () => {
-    fetch('api/patch', {
-      body: JSON.stringify({ patchId: `PATCH-${this.state.patchId}`, keyword: this.state.keyword }),
+    if (window.confirm("確定要匯入至Patch單嗎?")) {
+      let param = JSON.stringify({ result: this.state.result });
+      this.requestApi('api/patch/Submit', param, (json) => { alert(json); });
+    }
+  }
+
+  requestApi = (url, param, returnFun) => {
+    fetch(url, {
+      body: param,
       headers: {
         'user-agent': 'Mozilla/4.0 MDN Example',
         'content-type': 'application/json'
@@ -50,7 +67,7 @@ class Patch extends PureComponent {
         return response.json();
       }).then(json => {
         if (json !== null) {
-          this.setState({ result: json });
+          returnFun(json);
         }
       });
   }
@@ -79,6 +96,7 @@ class Patch extends PureComponent {
           onChange={(e) => this.setState({ patchId: e.target.value })}
         />
         <TextField type="text" label="Keyword" style={{ 'margin-left': '50px' }} value={this.state.keyword} onChange={(e) => this.setState({ keyword: e.target.value })} />
+        <Button variant="contained" color="primary" style={{ 'margin-left': '50px' }} onClick={this.handleSearch}>Search</Button>
         <Button variant="contained" color="primary" style={{ 'margin-left': '50px' }} onClick={this.handleSubmit}>Submit</Button>
         <div style={{ 'margin-top': '50px' }}>
           <h3>Result :</h3>
